@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import loginIcon from "../assets/signin.gif";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+import loginIcon from "../assets/signin.gif";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassword = () => {
@@ -29,15 +30,27 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-  // 24px
   return (
-    <section id="login">
+    <section id="signup ">
       <div className="mx-auto container p-4 mt-2.9">
         <div className="bg-white p-2 py-5 w-full max-w-sm mx-auto">
           <div className="w-20 h-20 mx-auto mt-3">
             <img src={loginIcon} alt="login icon" />
           </div>
           <form className="pt-6" onSubmit={handleSubmit}>
+            <div className="grid">
+              <label>Name : </label>
+              <div className="bg-slate-100 py-2">
+                <input
+                  type="text"
+                  className="w-full h-full outline-none bg-transparent"
+                  placeholder="Enter Name"
+                  name="name"
+                  value={data.name}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
             <div className="grid">
               <label>Email : </label>
               <div className="bg-slate-100 py-2">
@@ -96,4 +109,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
