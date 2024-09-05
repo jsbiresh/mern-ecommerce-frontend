@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import loginIcon from "../assets/signin.gif";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
+import Context from "../context";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +14,11 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
+  // const generalContext = useContext(Context);
+  const { fetchUserDetails } = useContext(Context);
+
+  // console.log("GENERAL CONTEXT", generalContext.fetchUserDetails());
+  // console.log("GENERAL CONTEXT", fetchUserDetails);
 
   const [data, setData] = useState({
     email: "",
@@ -32,7 +38,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Clicked Sign In Button", data);
     // ===============================
     // API CALL
     const dataResponse = await fetch(SummaryApi.SignIn.url, {
@@ -49,12 +54,12 @@ const Login = () => {
     if (dataApi.success) {
       toast.success(dataApi.message);
       navigate("/");
+      fetchUserDetails();
       // localStorage.setItem("token", dataApi.data);
       // window.location.href = "/";
     }
     if (dataApi.error) {
       toast.error(dataApi.message);
-      console.log("Login Failed");
     }
 
     // ===============================

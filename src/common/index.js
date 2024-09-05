@@ -24,10 +24,16 @@ const CurrentUser = {
   method: "get",
 };
 
+const LogOutUser = {
+  url: `${backendDomain}/api/userLogout`,
+  method: "get",
+};
+
 const SummaryApi = {
   SignUp,
   SignIn,
   CurrentUser,
+  LogOutUser,
 };
 
 export default SummaryApi;
