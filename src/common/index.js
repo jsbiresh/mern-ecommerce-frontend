@@ -29,11 +29,23 @@ const LogOutUser = {
   method: "get",
 };
 
+const AllUser = {
+  url: `${backendDomain}/api/all-users`,
+  method: "get",
+};
+
+const UpdateUser = {
+  url: `${backendDomain}/api/update-user`,
+  method: "post",
+};
+
 const SummaryApi = {
   SignUp,
   SignIn,
   CurrentUser,
   LogOutUser,
+  AllUser,
+  UpdateUser,
 };
 
 export default SummaryApi;
