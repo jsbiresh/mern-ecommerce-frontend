@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import loginIcon from "../assets/signin.gif";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import SummaryApi from "../common";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,6 +11,8 @@ const Login = () => {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  const navigate = useNavigate();
 
   const [data, setData] = useState({
     email: "",
@@ -26,8 +30,34 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Clicked Sign In Button", data);
+    // ===============================
+    // API CALL
+    const dataResponse = await fetch(SummaryApi.SignIn.url, {
+      method: SummaryApi.SignIn.method,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const dataApi = await dataResponse.json();
+    // =========================
+    if (dataApi.success) {
+      toast.success(dataApi.message);
+      navigate("/");
+      // localStorage.setItem("token", dataApi.data);
+      // window.location.href = "/";
+    }
+    if (dataApi.error) {
+      toast.error(dataApi.message);
+      console.log("Login Failed");
+    }
+
+    // ===============================
   };
   // 24px
   return (
@@ -46,6 +76,7 @@ const Login = () => {
                   className="w-full h-full outline-none bg-transparent"
                   placeholder="Enter Email"
                   name="email"
+                  required
                   value={data.email}
                   onChange={handleChange}
                 />
@@ -59,6 +90,7 @@ const Login = () => {
                   className="w-full h-full outline-none bg-transparent"
                   placeholder="Enter Password"
                   name="password"
+                  required
                   value={data.password}
                   onChange={handleChange}
                 />

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import loginIcon from "../assets/signin.gif";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import imageToBase64 from "../helpers/imageToBase64";
+import SummaryApi from "../common";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -24,6 +26,8 @@ const SignUp = () => {
     confirmPassword: "",
     profilePic: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,8 +52,30 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (data.password === data.confirmPassword) {
+      const dataResponse = await fetch(SummaryApi.SignUp.url, {
+        method: SummaryApi.SignUp.method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const dataApi = await dataResponse.json();
+      console.log("Data", dataApi);
+      if (dataApi.success) {
+        toast(dataApi.message);
+        navigate("/login");
+      }
+      if (dataApi.error) {
+        toast.error(dataApi.message);
+      }
+    } else {
+      alert("Password and Confirm Password should be same");
+      return;
+    }
   };
   return (
     <section id="signup ">
@@ -148,7 +174,7 @@ const SignUp = () => {
             </div>
 
             <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 w-full max-w-[150px] hover:scale-110 transition-all mx-auto block mt-7">
-              Login
+              Sign Up
             </button>
           </form>
           <p className="mt-4">
