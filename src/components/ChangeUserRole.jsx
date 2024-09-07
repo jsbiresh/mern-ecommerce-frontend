@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import ROLE from "../common/role";
 import { MdClose } from "react-icons/md";
 import SummaryApi from "../common";
+import { toast } from "react-toastify";
 
-const ChangeUserRole = ({ name, email, role, onClose }) => {
+const ChangeUserRole = ({ name, email, role, userId, onClose, callFunc }) => {
   const [userRole, setUserRole] = useState(role);
 
   const handleOnChangeSelect = (e) => {
@@ -17,15 +18,23 @@ const ChangeUserRole = ({ name, email, role, onClose }) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include", // Ensure credentials are sent with the request
       body: JSON.stringify({
+        userId: userId,
         role: userRole,
       }),
     });
     const dataResponse = await fetchResponse.json();
+
+    if (dataResponse.success) {
+      toast.success(dataResponse.message);
+      onClose();
+      callFunc();
+    }
     console.log("ROLE UPDATED", dataResponse);
   };
   return (
-    <div className="fixed top-0 bottom-0 left-0 right-0 w-full h-full z-10 flex justify-center items-center">
+    <div className="fixed top-0 bottom-0 left-0 right-0 w-full h-full z-10 flex justify-center items-center bg-slate-200 bg-opacity-50">
       <div className="mx-auto bg-white shadow-md p-4 w-full max-w-sm">
         <button
           className="block ml-auto mb-4"

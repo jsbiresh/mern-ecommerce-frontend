@@ -73,7 +73,8 @@ const SignUp = () => {
         toast.error(dataApi.message);
       }
     } else {
-      alert("Password and Confirm Password should be same");
+      toast.error("Password and Confirm Password should be same");
+      // alert("Password and Confirm Password should be same");
       return;
     }
   };
